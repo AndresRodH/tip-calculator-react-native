@@ -3,14 +3,17 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
+  Slider
 } from 'react-native'
 
 export default class App extends React.Component {
   state = {
     amountTotal: 0,
     tipPercentage: 0.15,
-    tipTotal: 0
+    tipTotal: 0,
+    split: 1,
+    amountPerPerson: 0
   }
 
   calculateTip = value => {
@@ -19,9 +22,22 @@ export default class App extends React.Component {
       amountTotal: value,
       tipTotal
     })
+    this.splitBill(this.state.split)
   }
 
-  render() {
+  splitBill = value => {
+    const { amountTotal, tipTotal } = this.state
+    const split = parseInt(value)
+    const amountPerPerson = ((amountTotal + tipTotal) / value).toFixed(2)
+
+    this.setState({
+      split,
+      amountPerPerson
+    })
+  }
+
+  render () {
+    const { tipTotal, split } = this.state
     return (
       <View style={styles.container}>
         <Text>
@@ -30,13 +46,23 @@ export default class App extends React.Component {
         <TextInput
           style={styles.textInput}
           onChangeText={this.calculateTip}
-        >
-        </TextInput>
+        />
+        <Text>
+          Split Amongst: {split}
+        </Text>
+        <Slider
+          maximumValue={10}
+          minimumValue={1}
+          step={1}
+          value={split}
+          style={styles.slider}
+          onValueChange={this.splitBill}
+        />
         <Text>
           Total Tip:
         </Text>
         <Text style={styles.amount}>
-          ${this.state.tipTotal}
+          ${tipTotal.toFixed(2)}
         </Text>
       </View>
     )
@@ -48,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   textInput: {
     textAlign: 'left',
@@ -62,5 +88,10 @@ const styles = StyleSheet.create({
   amount: {
     fontWeight: 'bold',
     textAlign: 'left'
+  },
+  slider: {
+    margin: 5,
+    height: 40,
+    width: '50%'
   }
 })
