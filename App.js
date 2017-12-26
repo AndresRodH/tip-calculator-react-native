@@ -7,19 +7,36 @@ import {
 } from 'react-native'
 
 export default class App extends React.Component {
+  state = {
+    amountTotal: 0,
+    tipPercentage: 0.15,
+    tipTotal: 0
+  }
+
+  calculateTip = value => {
+    const tipTotal = value * this.state.tipPercentage
+    this.setState({
+      amountTotal: value,
+      tipTotal
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text>
           Amount Total:
         </Text>
-        <TextInput style={styles.textInput}>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={this.calculateTip}
+        >
         </TextInput>
         <Text>
           Total Tip:
         </Text>
         <Text style={styles.amount}>
-          $10
+          ${this.state.tipTotal}
         </Text>
       </View>
     )
