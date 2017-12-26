@@ -17,18 +17,18 @@ export default class App extends React.Component {
   }
 
   calculateTip = value => {
-    const tipTotal = value * this.state.tipPercentage
+    const amountTotal = parseInt(value) || 0
+    const tipTotal = amountTotal * this.state.tipPercentage
     this.setState({
-      amountTotal: value,
+      amountTotal,
       tipTotal
-    })
-    this.splitBill(this.state.split)
+    }, () => this.splitBill(this.state.split))
   }
 
   splitBill = value => {
     const { amountTotal, tipTotal } = this.state
-    const split = parseInt(value)
-    const amountPerPerson = ((amountTotal + tipTotal) / value).toFixed(2)
+    const split = value
+    const amountPerPerson = amountTotal !== 0 ? ((amountTotal + tipTotal) / split).toFixed(2) : 0
 
     this.setState({
       split,
@@ -37,7 +37,7 @@ export default class App extends React.Component {
   }
 
   render () {
-    const { tipTotal, split } = this.state
+    const { tipTotal, split, amountPerPerson } = this.state
     return (
       <View style={styles.container}>
         <Text>
@@ -59,10 +59,16 @@ export default class App extends React.Component {
           onValueChange={this.splitBill}
         />
         <Text>
+          Amount Per Person:
+        </Text>
+        <Text style={styles.amount}>
+          ${amountPerPerson}
+        </Text>
+        <Text>
           Total Tip:
         </Text>
         <Text style={styles.amount}>
-          ${tipTotal.toFixed(2)}
+          ${tipTotal}
         </Text>
       </View>
     )
