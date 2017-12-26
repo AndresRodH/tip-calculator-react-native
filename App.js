@@ -1,10 +1,8 @@
 import React from 'react'
+import styled from 'styled-components/native'
 import {
-  StyleSheet,
   Text,
-  TextInput,
-  View,
-  Slider
+  View
 } from 'react-native'
 
 export default class App extends React.Component {
@@ -28,7 +26,7 @@ export default class App extends React.Component {
   splitBill = value => {
     const { amountTotal, tipTotal } = this.state
     const split = value
-    const amountPerPerson = amountTotal !== 0 ? ((amountTotal + tipTotal) / split).toFixed(2) : 0
+    const amountPerPerson = amountTotal !== 0 ? (amountTotal + tipTotal) / split : 0
 
     this.setState({
       split,
@@ -39,65 +37,65 @@ export default class App extends React.Component {
   render () {
     const { tipTotal, split, amountPerPerson } = this.state
     return (
-      <View style={styles.container}>
+      <MainView>
         <Text>
           Amount Total:
         </Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={this.calculateTip}
-        />
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontSize: 30, fontWeight: 'bold'}}>$</Text>
+          <StyledTextInput onChangeText={this.calculateTip} />
+        </View>
         <Text>
           Split Amongst: {split}
         </Text>
-        <Slider
+        <StyledSlider
           maximumValue={10}
           minimumValue={1}
           step={1}
           value={split}
-          style={styles.slider}
           onValueChange={this.splitBill}
         />
         <Text>
           Amount Per Person:
         </Text>
-        <Text style={styles.amount}>
-          ${amountPerPerson}
-        </Text>
+        <Amount>
+          ${amountPerPerson.toFixed(2)}
+        </Amount>
         <Text>
           Total Tip:
         </Text>
-        <Text style={styles.amount}>
-          ${tipTotal}
-        </Text>
-      </View>
+        <Amount>
+          ${tipTotal.toFixed(2)}
+        </Amount>
+      </MainView>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  textInput: {
-    textAlign: 'left',
-    color: '#333333',
-    margin: 5,
-    height: 50,
-    borderColor: '#60b7e2',
-    width: '100%',
-    borderWidth: 1
-  },
-  amount: {
-    fontWeight: 'bold',
-    textAlign: 'left'
-  },
-  slider: {
-    margin: 5,
-    height: 40,
-    width: '50%'
-  }
-})
+const MainView = styled.View`
+  flex: 1;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+`
+
+const StyledTextInput = styled.TextInput`
+  textAlign: left;
+  color: #333333;
+  margin: 5px;
+  height: 50px;
+  border-color: #60b7e2;
+  width: 80%;
+  border-width: 1;
+`
+
+const Amount = styled.Text`
+  font-weight: bold;
+  text-align: left;
+`
+
+const StyledSlider = styled.Slider`
+  margin: 5px;
+  height: 40px;
+  width: 50%;
+`
