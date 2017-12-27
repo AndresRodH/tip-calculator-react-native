@@ -1,3 +1,3 @@
-import TipSelector from './TipSelector'
+import TipSelector from './ios'
 
 export default TipSelector
