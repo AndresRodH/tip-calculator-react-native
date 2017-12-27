@@ -1,9 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import {
-  Text,
-  View
-} from 'react-native'
+import { Text } from 'react-native'
+import TipSelector from './components/TipSelector'
 
 export default class App extends React.Component {
   state = {
@@ -23,6 +21,12 @@ export default class App extends React.Component {
     }, () => this.splitBill(this.state.split))
   }
 
+  updateTipPercentage = tipPercentage => {
+    this.setState({
+      tipPercentage
+    }, () => this.calculateTip(this.state.amountTotal))
+  }
+
   splitBill = value => {
     const { amountTotal, tipTotal } = this.state
     const split = value
@@ -38,35 +42,31 @@ export default class App extends React.Component {
     const { tipTotal, split, amountPerPerson } = this.state
     return (
       <MainView>
-        <Text>
-          Amount Total:
-        </Text>
-        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 30, fontWeight: 'bold'}}>$</Text>
+        <Row>
+          <Label>Amount Total:</Label>
           <StyledTextInput onChangeText={this.calculateTip} />
-        </View>
-        <Text>
-          Split Amongst: {split}
-        </Text>
-        <StyledSlider
-          maximumValue={10}
-          minimumValue={1}
-          step={1}
-          value={split}
-          onValueChange={this.splitBill}
-        />
-        <Text>
-          Amount Per Person:
-        </Text>
-        <Amount>
-          ${amountPerPerson.toFixed(2)}
-        </Amount>
-        <Text>
-          Total Tip:
-        </Text>
-        <Amount>
-          ${tipTotal.toFixed(2)}
-        </Amount>
+        </Row>
+        <Row style={{margin: 10, marginTop: 20}}>
+          <TipSelector handleChange={this.updateTipPercentage} />
+        </Row>
+        <Row>
+          <Label>Split Amongst: <Text style={{fontWeight: 'bold'}}>{split}</Text></Label>
+          <StyledSlider
+            maximumValue={10}
+            minimumValue={1}
+            step={1}
+            value={split}
+            onValueChange={this.splitBill}
+          />
+        </Row>
+        <Row>
+          <Label>Amount Per Person:</Label>
+          <Amount>${amountPerPerson.toFixed(2)}</Amount>
+        </Row>
+        <Row>
+          <Label>Total Tip:</Label>
+          <Amount>${tipTotal.toFixed(2)}</Amount>
+        </Row>
       </MainView>
     )
   }
@@ -74,28 +74,43 @@ export default class App extends React.Component {
 
 const MainView = styled.View`
   flex: 1;
+  flex-direction: column;
   background-color: #fff;
-  align-items: center;
   justify-content: center;
 `
 
+const Label = styled.Text`
+  text-align: right;
+  margin: 10px;
+  color: #60b7e2;
+  flex: 1;
+`
+
 const StyledTextInput = styled.TextInput`
-  textAlign: left;
+  text-align: left;
   color: #333333;
-  margin: 5px;
+  margin: 10px;
   height: 50px;
   border-color: #60b7e2;
-  width: 80%;
   border-width: 1;
+  flex: 2;
+`
+
+const Row = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
 `
 
 const Amount = styled.Text`
   font-weight: bold;
   text-align: left;
+  flex: 2;
 `
 
 const StyledSlider = styled.Slider`
-  margin: 5px;
+  margin: 10px;
   height: 40px;
-  width: 50%;
+  flex: 2;
 `
