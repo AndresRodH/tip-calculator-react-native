@@ -121,7 +121,9 @@ const Amount = styled.Text`
   flex: 2;
 `
 
-const StyledSlider = styled.Slider`
+const StyledSlider = styled.Slider.attrs({
+  minimumTrackTintColor: '#60b7e2'
+})`
   margin: 10px;
   height: 40px;
   flex: 2;
