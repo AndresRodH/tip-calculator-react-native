@@ -96,7 +96,9 @@ const Label = styled.Text`
 `
 
 const StyledTextInput = styled.TextInput.attrs({
-  keyboardType: 'numeric'
+  keyboardType: 'numeric',
+  underlineColorAndroid: 'transparent',
+  caretHidden: true
 })`
   text-align: left;
   color: #333333;
@@ -122,7 +124,8 @@ const Amount = styled.Text`
 `
 
 const StyledSlider = styled.Slider.attrs({
-  minimumTrackTintColor: '#60b7e2'
+  minimumTrackTintColor: '#60b7e2',
+  thumbTintColor: '#60b7e2'
 })`
   margin: 10px;
   height: 40px;
