@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components/native'
 import { Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import TipSelector from './components/TipSelector'
 
-export default class App extends React.Component {
+export default class App extends Component {
   state = {
     amountTotal: 0,
     tipPercentage: 0.15,
@@ -13,7 +13,7 @@ export default class App extends React.Component {
   }
 
   calculateTip = value => {
-    const amountTotal = parseInt(value) || 0
+    const amountTotal = parseFloat(value) || 0
     const tipTotal = amountTotal * this.state.tipPercentage
     this.setState({
       amountTotal,
